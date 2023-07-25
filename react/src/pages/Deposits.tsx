@@ -3,13 +3,13 @@ import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import Title from './Title';
 import AccountService from '../service/AccountService.ts';
+import Decimal from 'decimal.js'; // Import the Decimal class
 
 function preventDefault(event: React.MouseEvent) {
     event.preventDefault();
 }
 
 export default function Deposits() {
-    
     const [balance, setBalance] = React.useState(localStorage.getItem('balance') || '');
     const [isEditing, setIsEditing] = React.useState(false);
 
@@ -21,23 +21,22 @@ export default function Deposits() {
         setIsEditing(true);
     };
 
-    const handleSaveClick = () => {
+    const handleSaveClick = async () => {
         setIsEditing(false);
         const balanceValue = parseFloat(balance.replace(/,/g, '')); // Parse the balance value as a float and remove commas
-        const updatedBalance = Math.round(balanceValue); // Convert the balance value to an integer
+        const updatedBalance = new Decimal(balanceValue); // Convert the balance value to a Decimal instance
 
         const accountId = localStorage.getItem('accountId');
         if (accountId !== null && !isNaN(Number(accountId))) {
             localStorage.setItem('balance', updatedBalance.toString());
-            AccountService.updateBalance(updatedBalance, Number(accountId))
-                .then(response => {
-                    console.log("Balance updated successfully:", response.data);
-                    // Handle success
-                })
-                .catch(error => {
-                    console.error("Error updating balance:", error);
-                    // Handle error
-                });
+            try {
+                await AccountService.updateBalance(updatedBalance, Number(accountId));
+                console.log("Balance updated successfully.");
+                // Handle success
+            } catch (error) {
+                console.error("Error updating balance:", error);
+                // Handle error
+            }
         } else {
             console.error("Invalid accountId in localStorage:", accountId);
             // Handle the case when accountId is invalid or not found
@@ -71,5 +70,3 @@ export default function Deposits() {
         </React.Fragment>
     );
 }
-
-

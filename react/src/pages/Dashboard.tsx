@@ -18,7 +18,6 @@ const Dashboard = () => {
                             height: 240,
                         }}
                     >
-                        <Chart />
                     </Paper>
                 </Grid>
                 {/* Pending Transactions */}

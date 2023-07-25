@@ -49,14 +49,14 @@ export default function SignUp() {
         zipCode: '',
     });
 
-    const handleChange = (event) => {
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setUser((prevUser) => ({
             ...prevUser,
             [event.target.name]: event.target.value,
         }));
     };
 
-    const handleSubmit = async (event) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         try {
             const response = await authService.register(user);

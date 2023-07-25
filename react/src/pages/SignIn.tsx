@@ -16,12 +16,12 @@ import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import AuthService from "../service/AuthService.ts";
 import AccountService from "../service/AccountService.ts";
-import {isNumber} from "recharts/types/util/DataUtils";
+import { isNumber } from "recharts/types/util/DataUtils";
 
 function SignIn() {
     const navigate = useNavigate();
 
-    const handleSubmit = async (event) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         const username = data.get('username');
@@ -92,7 +92,7 @@ function SignIn() {
                                 margin="normal"
                                 required
                                 fullWidth
-                                helperText = "Enter your username"
+                                helperText="Enter your username"
                                 id="username"
                                 label="Username"
                                 name="username"
@@ -104,7 +104,7 @@ function SignIn() {
                                 margin="normal"
                                 required
                                 fullWidth
-                                helperText = "Enter your password"
+                                helperText="Enter your password"
                                 name="password"
                                 label="Password"
                                 type="password"

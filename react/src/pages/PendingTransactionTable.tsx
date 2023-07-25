@@ -8,7 +8,9 @@ import TableRow from '@mui/material/TableRow';
 import Title from './Title';
 import TransactionService from '../service/TransactionService.ts';
 import AccountService from '../service/AccountService.ts';
-import {useCallback, useEffect, useState} from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import Decimal from 'decimal.js'; // Import the Decimal class
+
 function preventDefault(event: React.MouseEvent) {
     event.preventDefault();
 }
@@ -62,16 +64,20 @@ export default function PendingTransactionTable() {
             clearInterval(intervalId); // Clear the interval on component unmount
         };
     }, [fetchTransactions]);
+
     const handleAcceptClick = (transactionId: number, amount: number) => {
+        // Convert the amount to a Decimal instance
+        const amountDecimal = new Decimal(amount);
+
         // Call the acceptTransaction API endpoint and handle success/failure
         TransactionService.acceptTransaction(transactionId)
             .then(response => {
                 console.log('Transaction accepted:', response.data);
                 // Handle success: Update balance and fetch updated transactions
-                const newBalance = accountBalance - amount;
+                const newBalance = new Decimal(accountBalance).minus(amountDecimal).toNumber();
                 const accountIdString = localStorage.getItem('accountId');
                 const accountId = parseInt(accountIdString!);
-                AccountService.updateBalance(newBalance, accountId)
+                AccountService.updateBalance(new Decimal(newBalance), accountId) // Convert newBalance to a Decimal instance
                     .then(() => {
                         fetchTransactions(); // Fetch updated transactions and balance
                     })
@@ -125,8 +131,12 @@ export default function PendingTransactionTable() {
                             <TableCell>
                                 {row.status === 'Pending' && ( // Show buttons only for pending transactions
                                     <>
-                                        <button onClick={() => handleAcceptClick(row.transactionId)}>Accept</button>
-                                        <button onClick={() => handleRejectClick(row.transactionId)}>Reject</button>
+                                        <button onClick={() => handleAcceptClick(row.transactionId, row.amount)}>
+                                            Accept
+                                        </button>
+                                        <button onClick={() => handleRejectClick(row.transactionId)}>
+                                            Reject
+                                        </button>
                                     </>
                                 )}
                             </TableCell>
@@ -137,3 +147,4 @@ export default function PendingTransactionTable() {
         </React.Fragment>
     );
 }
+

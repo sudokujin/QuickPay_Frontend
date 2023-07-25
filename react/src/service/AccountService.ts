@@ -1,68 +1,72 @@
 import axios from 'axios';
 import { Decimal } from 'decimal.js';
 import AccountService from './AccountService';
+
 const http = axios.create({
-    baseURL: 'http://localhost:9000',
+  baseURL: 'http://localhost:9000',
 });
 
 http.interceptors.request.use(
-    (config) => {
-        const token = localStorage.getItem('jwtToken');
+  (config) => {
+    const token = localStorage.getItem('jwtToken');
 
-        if (token) {
-            config.headers['Authorization'] = `Bearer ${token}`;
-        }
-
-        // Set the content type header to 'application/json'
-        config.headers['Content-Type'] = 'application/json';
-
-        return config;
-    },
-    (error) => {
-        return Promise.reject(error);
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`;
     }
+
+    // Set the content type header to 'application/json'
+    config.headers['Content-Type'] = 'application/json';
+
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
 );
 
 let balance;
+
 export default {
-    createAccount(account) {
-        return http.post('/account', account);
-    },
-    async updateBalance(balance: Decimal, accountId: number) {
-        const stringBalance = balance.toString();
+  createAccount(account: any) {
+    return http.post('/account', account);
+  },
 
-        try {
-            const response = await http.put(`/account/${accountId}`, stringBalance, {
-                headers: {
-                    'Content-Type': 'text/plain'
-                }
-            });
+  async updateBalance(balance: Decimal, accountId: number) {
+    const stringBalance = balance.toString();
 
-            // Check if the request was successful
-            if (response.status !== 200) {
-                throw new Error('Failed to update balance on the server.');
-            }
+    try {
+      const response = await http.put(`/account/${accountId}`, stringBalance, {
+        headers: {
+          'Content-Type': 'text/plain',
+        },
+      });
 
-            // Balance updated successfully
-            console.log('Balance updated successfully.');
-        } catch (error) {
-            console.error('Error updating balance:', error);
-            throw error;
-        }
-    },
-    getBalance(accountId : number) {
-        return http.get(`/account/balance/${accountId}`);
-    },
+      // Check if the request was successful
+      if (response.status !== 200) {
+        throw new Error('Failed to update balance on the server.');
+      }
 
-    getAccountByAccountID(accountId) {
-        return http.get(`/account/${accountId}`);
-    },
+      // Balance updated successfully
+      console.log('Balance updated successfully.');
+    } catch (error) {
+      console.error('Error updating balance:', error);
+      throw error;
+    }
+  },
 
-    getAccountByUserID(userId) {
-        return http.get(`/account/user/${userId}`);
-    },
+  getBalance(accountId: number) {
+    return http.get(`/account/balance/${accountId}`);
+  },
 
-    deleteAccount(account) {
-        return http.delete('/account', account);
-    },
+  getAccountByAccountID(accountId: number) {
+    return http.get(`/account/${accountId}`);
+  },
+
+  getAccountByUserID(userId: number) {
+    return http.get(`/account/user/${userId}`);
+  },
+
+  deleteAccount(account: any) {
+    return http.delete('/account', account);
+  },
 };

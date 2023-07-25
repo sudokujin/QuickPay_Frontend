@@ -2,11 +2,16 @@ import React, { useState } from 'react';
 import { Button, TextField } from '@mui/material';
 import FriendService from '../service/FriendService.ts';
 
-const CreateFriendRequest = ({ onFriendRequestCreate, accountId }) => {
+interface CreateFriendRequestProps {
+    onFriendRequestCreate: () => void; // Specify the type for onFriendRequestCreate
+    accountId: string; // You can specify the type for accountId if needed
+  }
+
+  const CreateFriendRequest: React.FC<CreateFriendRequestProps> = ({ onFriendRequestCreate, accountId }) => {
     const [friendId, setFriendId] = useState('');
     const [error, setError] = useState('');
 
-    const handleSubmit = async (event) => {
+    const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
 
         try {

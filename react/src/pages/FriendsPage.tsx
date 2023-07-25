@@ -21,17 +21,17 @@ interface Friend {
 const FriendsPage = () => {
   const [friendRequests, setFriendRequests] = useState<FriendRequest[]>([]);
   const [friends, setFriends] = useState<Friend[]>([]);
-  const accountId = localStorage.getItem('accountId');
+  const accountId = localStorage.getItem('accountId') ? parseInt(localStorage.getItem('accountId')!, 10) : null;
 
   const fetchFriendRequestsAndFriends = async () => {
     try {
-      if (accountId) {
-        // Fetch both sender and receiver friend requests
-        const responseFriendRequests = await FriendService.getFriendRequests(parseInt(accountId));
+      if (accountId !== null) {
+        // Convert accountId to string before passing
+        const responseFriendRequests = await FriendService.getFriendRequests(accountId.toString());
         setFriendRequests(responseFriendRequests.data);
 
         // Fetch friends for the logged-in user
-        const responseFriends = await FriendService.getFriendsByAccountId(parseInt(accountId));
+        const responseFriends = await FriendService.getFriendsByAccountId(accountId);
         setFriends(responseFriends.data);
       }
     } catch (error) {
@@ -72,12 +72,14 @@ const FriendsPage = () => {
 
   return (
     <MainPage>
-      <CreateFriendRequestComponent onFriendRequestCreate={handleFriendRequestCreate} accountId={accountId} />
+      {accountId !== null && (
+        <CreateFriendRequestComponent onFriendRequestCreate={handleFriendRequestCreate} accountId={accountId.toString()} />
+      )}
       <FriendsList friends={friends} />
       <div>
         <h2>Friend Requests</h2>
         {friendRequests
-          .filter((request) => request.receiverId === parseInt(accountId))
+          .filter((request) => request.receiverId === accountId)
           .map((request) => (
             <FriendRequestComponent
               key={request.requestId}

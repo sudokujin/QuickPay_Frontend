@@ -19,11 +19,11 @@ const PayAndRequest = () => {
     const [comment, setDescription] = useState('');
     const [targetId, setTargetId] = useState('');
 
-    const handleOptionChange = (event) => {
+    const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedOption(event.target.value);
     };
 
-    const handleSubmit = async (event) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
         try {
@@ -36,7 +36,7 @@ const PayAndRequest = () => {
 
             // Convert the amount to a Decimal instance
             const transactionAmount = new Decimal(amount);
-            if (isNaN(transactionAmount)) {
+            if (isNaN(transactionAmount.toNumber())) {
                 throw new Error('Invalid amount value: ' + amount);
             }
 
@@ -58,7 +58,7 @@ const PayAndRequest = () => {
             const transaction = {
                 actingId,
                 targetId,
-                amount,
+                amount: transactionAmount.toNumber(), // Convert Decimal to number
                 status: selectedOption === 'request' ? 'Pending' : 'Approved',
                 typeId: selectedOption === 'pay' ? 1 : 2,
                 comment,
