@@ -29,6 +29,7 @@ export default function Balance() {
         const accountId = localStorage.getItem('accountId');
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
+        // Check if accountId is a number
         if (accountId !== null && !isNaN(Number(accountId))) {
             // Make the API call to update the balance on the server
             try {
