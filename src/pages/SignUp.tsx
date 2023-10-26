@@ -48,22 +48,14 @@ export default function SignUp() {
         zipCode: '',
     });
 
-<<<<<<< HEAD:src/pages/SignUp.tsx
     const handleChange = (event: { target: { name: any; value: any; }; }) => {
-=======
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
->>>>>>> origin/main:react/src/pages/SignUp.tsx
         setUser((prevUser) => ({
             ...prevUser,
             [event.target.name]: event.target.value,
         }));
     };
 
-<<<<<<< HEAD:src/pages/SignUp.tsx
     const handleSubmit = async (event: { preventDefault: () => void; }) => {
-=======
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
->>>>>>> origin/main:react/src/pages/SignUp.tsx
         event.preventDefault();
         try {
             const response = await authService.register(user);

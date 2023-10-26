@@ -12,17 +12,10 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
-<<<<<<< HEAD:src/pages/SignIn.tsx
 import AuthService from "../service/AuthService";
 import AccountService from "../service/AccountService";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
-=======
-import AuthService from "../service/AuthService.ts";
-import AccountService from "../service/AccountService.ts";
-import { isNumber } from "recharts/types/util/DataUtils";
-
->>>>>>> origin/main:react/src/pages/SignIn.tsx
 function SignIn() {
     const navigate = useNavigate();
 

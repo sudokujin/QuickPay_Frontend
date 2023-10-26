@@ -9,21 +9,7 @@ const Dashboard = () => {
     return (
         <MainPage>
             <Grid container spacing={3}>
-<<<<<<< HEAD:src/pages/Dashboard.tsx
-=======
-                {/* Chart */}
-                <Grid item xs={12} md={8} lg={9}>
-                    <Paper
-                        sx={{
-                            p: 2,
-                            display: 'flex',
-                            flexDirection: 'column',
-                            height: 240,
-                        }}
-                    >
-                    </Paper>
-                </Grid>
->>>>>>> origin/main:react/src/pages/Dashboard.tsx
+
                 {/* Pending Transactions */}
                 <Grid item xs={12} md={4} lg={3}>
                     <Paper
