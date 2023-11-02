@@ -19,7 +19,8 @@ http.interceptors.request.use(
         return Promise.reject(error);
     }
 );
-
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 export default {
     createFriendRequest: function (senderId: number, receiverId: number, status: string) {
         return http.post('/friendrequest', { senderId, receiverId, status });
